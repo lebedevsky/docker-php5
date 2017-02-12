@@ -5,6 +5,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
     rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm && \
     yum install --enablerepo=webtatic-testing -y \
         php56w \
+        php56w-devel \
         php56w-common \
         php56w-fpm \
         php56w-cli \
@@ -12,6 +13,8 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
         php56w-intl \
         php56w-mbstring \
         php56w-mcrypt \
+        php56w-pdo \
+        php56w-mssql \
         php56w-mysql \
         php56w-pgsql \
         php56w-opcache \
