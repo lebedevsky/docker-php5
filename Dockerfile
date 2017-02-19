@@ -1,9 +1,8 @@
 FROM lebedevsky/docker-centos7
 MAINTAINER an.elebedevsky@gmail.com
 
-RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
-    rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm && \
-    yum install --enablerepo=webtatic-testing -y \
+RUN rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm && \
+    yum install -y \
         php56w \
         php56w-common \
         php56w-fpm \
@@ -13,6 +12,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
         php56w-mbstring \
         php56w-mcrypt \
         php56w-pdo \
+        php56w-odbc \
         php56w-mssql \
         php56w-mysql \
         php56w-pgsql \
@@ -24,6 +24,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
         php56w-pecl-gearman \
         php56w-pecl-geoip \
         php56w-pecl-memcache \
+        php56w-process \
         php56w-pecl-xdebug
 
 RUN yum -y clean all
