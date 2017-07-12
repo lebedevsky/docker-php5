@@ -1,7 +1,7 @@
 FROM lebedevsky/docker-ubuntu16
 MAINTAINER lebedevsky <an.lebedevsky@gmail.com>
 
-ARG docker_env
+ARG docker_env=development
 
 RUN apt-add-repository -y ppa:ondrej/php && \
     apt-get update
@@ -17,7 +17,7 @@ RUN apt-get install -y \
             php5.6-mbstring \
             php5.6-mcrypt \
             php5.6-opcache \
-            php5-xcache \
+            php5.6-xcache \
             php5.6-intl \
             php5.6-pdo \
             php5.6-mysql \
@@ -30,6 +30,9 @@ RUN apt-get install -y \
             php5.6-mongodb \
             php5.6-xdebug
 
+RUN phpenmod mcrypt
+RUN phpdismod opcache
+
 # clean
 RUN apt-get autoclean
 
@@ -40,6 +43,10 @@ RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
 RUN chmod a+x /usr/local/bin/composer
 
-#COPY ./env/$docker_env ./etc
+COPY ./env/$docker_env ./etc
+
+RUN mkdir /var/log/php5
 
 EXPOSE 9000
+
+ENTRYPOINT ["php-fpm5.6", "-F"]
