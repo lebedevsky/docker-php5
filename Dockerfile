@@ -1,48 +1,45 @@
-FROM lebedevsky/docker-centos7
-MAINTAINER an.elebedevsky@gmail.com
+FROM lebedevsky/docker-ubuntu16
+MAINTAINER lebedevsky <an.lebedevsky@gmail.com>
 
-RUN rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm && \
-    yum install -y \
-        php56w \
-        php56w-common \
-        php56w-fpm \
-        php56w-cli \
-        php56w-gd \
-        php56w-intl \
-        php56w-mbstring \
-        php56w-mcrypt \
-        php56w-pdo \
-        php56w-odbc \
-        php56w-mssql \
-        php56w-mysql \
-        php56w-pgsql \
-        php56w-opcache \
-        php56w-xml \
-        php56w-imap \
-        php56w-snmp \
-        php56w-pecl-imagick \
-        php56w-pecl-gearman \
-        php56w-pecl-geoip \
-        php56w-pecl-memcache \
-        php56w-process \
-        php56w-pecl-xdebug
+ARG docker_env
 
-RUN yum -y clean all
+RUN apt-add-repository -y ppa:ondrej/php && \
+    apt-get update
+
+RUN apt-get install -y \
+            php5.6 \
+            php5.6-common \
+            php5.6-cli \
+            php5.6-fpm \
+            php5.6-curl \
+            php5.6-zip \
+            php5.6-xml \
+            php5.6-mbstring \
+            php5.6-mcrypt \
+            php5.6-opcache \
+            php5-xcache \
+            php5.6-intl \
+            php5.6-pdo \
+            php5.6-mysql \
+            php5.6-pgsql \
+            php5.6-gd \
+            php5.6-imagick \
+            php5.6-json \
+            php5.6-redis \
+            php5.6-memcached \
+            php5.6-mongodb \
+            php5.6-xdebug
+
+# clean
+RUN apt-get autoclean
 
 # composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php composer-setup.php
+RUN php composer-setup.php 
 RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
+RUN chmod a+x /usr/local/bin/composer
 
-# yii2
-RUN composer global require "fxp/composer-asset-plugin:^1.2.0"
-
-# codecept
-RUN php -r "copy('http://codeception.com/codecept.phar', 'codecept');"
-RUN mv codecept /usr/local/bin/codecept
-RUN chmod a+x /usr/local/bin/codecept
+#COPY ./env/$docker_env ./etc
 
 EXPOSE 9000
-
-ENTRYPOINT ["php-fpm", "-F"]
