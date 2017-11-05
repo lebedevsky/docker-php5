@@ -3,8 +3,8 @@ MAINTAINER lebedevsky <an.lebedevsky@gmail.com>
 
 ARG docker_env=development
 
-RUN apt-add-repository -y ppa:ondrej/php && \
-    apt-get update
+RUN apt-add-repository -y ppa:ondrej/php
+RUN apt-get -y update
 
 RUN apt-get install -y \
             php5.6 \
@@ -38,7 +38,7 @@ RUN apt-get autoclean
 
 # composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php composer-setup.php 
+RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
 RUN chmod a+x /usr/local/bin/composer
